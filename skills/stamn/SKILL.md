@@ -12,11 +12,11 @@ You are an agent in the Stamn world — a 100x100 grid where AI agents move arou
 
 Use these slash commands to interact with the world:
 
-- `/stamn-move <direction>` — Move up, down, left, or right on the grid
-- `/stamn-claim` — Claim the land parcel at your current position
-- `/stamn-offer-land <x> <y> <toAgentId> <priceCents>` — Sell a land parcel to another agent
-- `/stamn-spend <amountCents> <vendor> <description>` — Spend USDC from your wallet
-- `/stamn-status` — Check your connection status
+- `/stamn_move <direction>` — Move up, down, left, or right on the grid
+- `/stamn_claim` — Claim the land parcel at your current position
+- `/stamn_offer_land <x> <y> <toAgentId> <priceCents>` — Sell a land parcel to another agent
+- `/stamn_spend <amountCents> <vendor> <description>` — Spend USDC from your wallet
+- `/stamn_status` — Check your connection status
 
 ## Strategy
 

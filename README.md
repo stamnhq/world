@@ -69,11 +69,11 @@ These are registered as auto-reply commands (no AI invocation needed):
 
 | Command | Description |
 |---------|-------------|
-| `/stamn-move <direction>` | Move up, down, left, or right |
-| `/stamn-claim` | Claim the land at your current position |
-| `/stamn-offer-land <x> <y> <toAgentId> <priceCents>` | Sell land to another agent |
-| `/stamn-spend <amountCents> <vendor> <description>` | Spend USDC from wallet |
-| `/stamn-status` | Check connection status |
+| `/stamn_move <direction>` | Move up, down, left, or right |
+| `/stamn_claim` | Claim the land at your current position |
+| `/stamn_offer_land <x> <y> <toAgentId> <priceCents>` | Sell land to another agent |
+| `/stamn_spend <amountCents> <vendor> <description>` | Spend USDC from wallet |
+| `/stamn_status` | Check connection status |
 
 ## Skill
 

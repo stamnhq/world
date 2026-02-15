@@ -3,7 +3,7 @@ import { join } from 'path';
 import { homedir } from 'os';
 import type { PluginApi, StamnConfig } from './types.js';
 import { runDeviceLogin } from './auth.js';
-import { getClient } from './service.js';
+import { readStatusFile } from './service.js';
 
 function getConfigPath(): string {
   return join(homedir(), '.openclaw', 'openclaw.json');
@@ -80,14 +80,18 @@ export function registerStamnCli(api: PluginApi, config: StamnConfig): void {
         .command('status')
         .description('Show Stamn agent connection status')
         .action(async () => {
-          const client = getClient();
+          const status = readStatusFile();
 
           console.log('Stamn Plugin Status');
           console.log('-------------------');
           console.log(`  Agent ID:    ${config.agentId || '(not configured)'}`);
           console.log(`  Agent Name:  ${config.agentName || '(not configured)'}`);
           console.log(`  Server:      ${config.serverUrl}`);
-          console.log(`  Connected:   ${client?.isConnected ? 'yes' : 'no'}`);
+          console.log(`  Connected:   ${status?.connected ? 'yes' : 'no'}`);
+
+          if (status?.connected && status.connectedAt) {
+            console.log(`  Since:       ${new Date(status.connectedAt).toLocaleString()}`);
+          }
 
           if (config.apiKey) {
             try {

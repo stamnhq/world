@@ -27,7 +27,7 @@ export default function register(api: PluginApi): void {
     stop: () => stopStamnService(),
   });
 
-  // Auto-reply commands: /stamn-move, /stamn-claim, /stamn-spend, etc.
+  // Auto-reply commands: /stamn_move, /stamn_claim, /stamn_spend, etc.
   registerStamnTools(api);
 
   // CLI commands: openclaw stamn login / status

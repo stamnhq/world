@@ -1,3 +1,6 @@
+import { writeFileSync, mkdirSync, readFileSync, unlinkSync } from 'fs';
+import { join } from 'path';
+import { homedir } from 'os';
 import type { PluginLogger, StamnConfig } from './types.js';
 import { StamnWSClient } from './ws-client.js';
 
@@ -6,6 +9,50 @@ let client: StamnWSClient | null = null;
 export function getClient(): StamnWSClient | null {
   return client;
 }
+
+// ── Status file (shared between gateway + CLI processes) ─────────────────
+
+function getStatusFilePath(): string {
+  return join(homedir(), '.openclaw', 'stamn-status.json');
+}
+
+export interface StamnStatusFile {
+  connected: boolean;
+  agentId: string;
+  agentName?: string;
+  serverUrl: string;
+  connectedAt?: string;
+  disconnectedAt?: string;
+}
+
+function writeStatusFile(status: StamnStatusFile): void {
+  try {
+    const dir = join(homedir(), '.openclaw');
+    mkdirSync(dir, { recursive: true });
+    writeFileSync(getStatusFilePath(), JSON.stringify(status, null, 2) + '\n', 'utf-8');
+  } catch {
+    // non-critical — don't crash the service
+  }
+}
+
+export function readStatusFile(): StamnStatusFile | null {
+  try {
+    const raw = readFileSync(getStatusFilePath(), 'utf-8');
+    return JSON.parse(raw);
+  } catch {
+    return null;
+  }
+}
+
+function removeStatusFile(): void {
+  try {
+    unlinkSync(getStatusFilePath());
+  } catch {
+    // already gone
+  }
+}
+
+// ── Service lifecycle ────────────────────────────────────────────────────
 
 export function startStamnService(logger: PluginLogger, config: StamnConfig): void {
   if (!config.apiKey || !config.agentId) {
@@ -16,9 +63,23 @@ export function startStamnService(logger: PluginLogger, config: StamnConfig): vo
   client = new StamnWSClient(config, logger, {
     onConnected: () => {
       logger.info(`Stamn agent "${config.agentName ?? config.agentId}" connected to world`);
+      writeStatusFile({
+        connected: true,
+        agentId: config.agentId,
+        agentName: config.agentName,
+        serverUrl: config.serverUrl,
+        connectedAt: new Date().toISOString(),
+      });
     },
     onDisconnect: () => {
       logger.warn('Stamn agent disconnected from world');
+      writeStatusFile({
+        connected: false,
+        agentId: config.agentId,
+        agentName: config.agentName,
+        serverUrl: config.serverUrl,
+        disconnectedAt: new Date().toISOString(),
+      });
     },
     onCommand: (command, params) => {
       logger.info(`Server command: ${command} ${params ? JSON.stringify(params) : ''}`);
@@ -53,4 +114,5 @@ export function stopStamnService(): void {
     client.disconnect();
     client = null;
   }
+  removeStatusFile();
 }

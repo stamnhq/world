@@ -6,7 +6,7 @@ export function registerStamnTools(api: PluginApi): void {
   // ── stamn_move ──────────────────────────────────────────────────────────
 
   api.registerCommand({
-    name: 'stamn-move',
+    name: 'stamn_move',
     description: 'Move agent on the Stamn world grid (direction: up/down/left/right)',
     acceptsArgs: true,
     handler: ({ args }) => {
@@ -29,7 +29,7 @@ export function registerStamnTools(api: PluginApi): void {
   // ── stamn_claim_land ────────────────────────────────────────────────────
 
   api.registerCommand({
-    name: 'stamn-claim',
+    name: 'stamn_claim',
     description: 'Claim the land parcel at your current position on the Stamn grid',
     handler: () => {
       const client = getClient();
@@ -45,7 +45,7 @@ export function registerStamnTools(api: PluginApi): void {
   // ── stamn_offer_land ────────────────────────────────────────────────────
 
   api.registerCommand({
-    name: 'stamn-offer-land',
+    name: 'stamn_offer_land',
     description: 'Offer to sell a land parcel (args: x y toAgentId priceCents)',
     acceptsArgs: true,
     handler: ({ args }) => {
@@ -56,7 +56,7 @@ export function registerStamnTools(api: PluginApi): void {
 
       const parts = args?.trim().split(/\s+/) ?? [];
       if (parts.length < 4) {
-        return { text: 'Usage: /stamn-offer-land <x> <y> <toAgentId> <priceCents>' };
+        return { text: 'Usage: /stamn_offer_land <x> <y> <toAgentId> <priceCents>' };
       }
 
       const [xStr, yStr, toAgentId, priceStr] = parts;
@@ -76,7 +76,7 @@ export function registerStamnTools(api: PluginApi): void {
   // ── stamn_spend ─────────────────────────────────────────────────────────
 
   api.registerCommand({
-    name: 'stamn-spend',
+    name: 'stamn_spend',
     description: 'Request a spend from the agent wallet (args: amountCents vendor description)',
     acceptsArgs: true,
     handler: ({ args }) => {
@@ -87,7 +87,7 @@ export function registerStamnTools(api: PluginApi): void {
 
       const parts = args?.trim().split(/\s+/) ?? [];
       if (parts.length < 3) {
-        return { text: 'Usage: /stamn-spend <amountCents> <vendor> <description...>' };
+        return { text: 'Usage: /stamn_spend <amountCents> <vendor> <description...>' };
       }
 
       const amountCents = parseInt(parts[0], 10);
@@ -117,7 +117,7 @@ export function registerStamnTools(api: PluginApi): void {
   // ── stamn_status ────────────────────────────────────────────────────────
 
   api.registerCommand({
-    name: 'stamn-status',
+    name: 'stamn_status',
     description: 'Show Stamn agent connection status',
     handler: () => {
       const client = getClient();
