@@ -1,0 +1,21 @@
+{
+  "id": "stamn",
+  "name": "Stamn World",
+  "description": "Connect to the Stamn world grid — move, claim land, trade, and manage agent wallets",
+  "configSchema": {
+    "type": "object",
+    "properties": {
+      "serverUrl": { "type": "string", "default": "https://api.stamn.com" },
+      "apiKey": { "type": "string" },
+      "agentId": { "type": "string" },
+      "agentName": { "type": "string" },
+      "heartbeatIntervalMs": { "type": "number", "default": 30000 }
+    }
+  },
+  "uiHints": {
+    "apiKey": { "label": "API Key", "sensitive": true },
+    "agentId": { "label": "Agent ID", "placeholder": "uuid" },
+    "agentName": { "label": "Agent Name" },
+    "serverUrl": { "label": "Server URL" }
+  }
+}
