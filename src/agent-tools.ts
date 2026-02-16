@@ -2,6 +2,11 @@ import { randomUUID } from 'crypto';
 import type { PluginApi, MoveDirection, SpendRequestPayload } from './types.js';
 import { getClient } from './service.js';
 
+/** OpenClaw expects tool results as { content: [{ type: 'text', text }] } */
+function toolResult(text: string) {
+  return { content: [{ type: 'text' as const, text }] };
+}
+
 /**
  * Register Stamn actions as agent tools so the AI can call them
  * during its reasoning loop (via OpenAI function calling protocol).
@@ -27,11 +32,11 @@ export function registerAgentTools(api: PluginApi): void {
     },
     execute: async (args) => {
       const client = getClient();
-      if (!client?.isConnected) return 'Not connected to Stamn server.';
+      if (!client?.isConnected) return toolResult('Not connected to Stamn server.');
 
       const direction = (args.direction as string).toLowerCase() as MoveDirection;
       client.move(direction);
-      return `Moved ${direction}.`;
+      return toolResult(`Moved ${direction}.`);
     },
   });
 
@@ -46,10 +51,10 @@ export function registerAgentTools(api: PluginApi): void {
     },
     execute: async () => {
       const client = getClient();
-      if (!client?.isConnected) return 'Not connected to Stamn server.';
+      if (!client?.isConnected) return toolResult('Not connected to Stamn server.');
 
       client.claimLand();
-      return 'Land claim request sent.';
+      return toolResult('Land claim request sent.');
     },
   });
 
@@ -68,18 +73,18 @@ export function registerAgentTools(api: PluginApi): void {
     },
     execute: async (args) => {
       const client = getClient();
-      if (!client?.isConnected) return 'Not connected to Stamn server.';
+      if (!client?.isConnected) return toolResult('Not connected to Stamn server.');
 
       const x = parseInt(args.x as string, 10);
       const y = parseInt(args.y as string, 10);
       const priceCents = parseInt(args.priceCents as string, 10);
 
       if (isNaN(x) || isNaN(y) || isNaN(priceCents)) {
-        return 'x, y, and priceCents must be numbers.';
+        return toolResult('x, y, and priceCents must be numbers.');
       }
 
       client.offerLand(x, y, args.toAgentId as string, priceCents);
-      return `Offered land (${x}, ${y}) to ${args.toAgentId} for ${priceCents} cents.`;
+      return toolResult(`Offered land (${x}, ${y}) to ${args.toAgentId} for ${priceCents} cents.`);
     },
   });
 
@@ -97,11 +102,11 @@ export function registerAgentTools(api: PluginApi): void {
     },
     execute: async (args) => {
       const client = getClient();
-      if (!client?.isConnected) return 'Not connected to Stamn server.';
+      if (!client?.isConnected) return toolResult('Not connected to Stamn server.');
 
       const amountCents = parseInt(args.amountCents as string, 10);
       if (isNaN(amountCents) || amountCents <= 0) {
-        return 'amountCents must be a positive number.';
+        return toolResult('amountCents must be a positive number.');
       }
 
       const payload: SpendRequestPayload = {
@@ -115,7 +120,7 @@ export function registerAgentTools(api: PluginApi): void {
       };
 
       client.requestSpend(payload);
-      return `Spend request sent: ${amountCents} cents to ${args.vendor} — "${args.description}"`;
+      return toolResult(`Spend request sent: ${amountCents} cents to ${args.vendor} — "${args.description}"`);
     },
   });
 
@@ -130,10 +135,12 @@ export function registerAgentTools(api: PluginApi): void {
     },
     execute: async () => {
       const client = getClient();
-      if (!client) return 'Stamn plugin not initialized. Check config.';
-      return client.isConnected
-        ? 'Connected to Stamn world.'
-        : 'Disconnected from Stamn world (reconnecting...).';
+      if (!client) return toolResult('Stamn plugin not initialized. Check config.');
+      return toolResult(
+        client.isConnected
+          ? 'Connected to Stamn world.'
+          : 'Disconnected from Stamn world (reconnecting...).',
+      );
     },
   });
 }

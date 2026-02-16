@@ -168,6 +168,15 @@ export interface ToolParameters {
   required?: string[];
 }
 
+export interface ToolResultContent {
+  type: 'text';
+  text: string;
+}
+
+export interface ToolResult {
+  content: ToolResultContent[];
+}
+
 export interface PluginApi {
   logger: PluginLogger;
   config: Record<string, unknown>;
@@ -190,6 +199,8 @@ export interface PluginApi {
     name: string;
     description: string;
     parameters: ToolParameters;
-    execute: (args: Record<string, unknown>) => string | Promise<string>;
+    execute: (
+      args: Record<string, unknown>,
+    ) => ToolResult | Promise<ToolResult>;
   }): void;
 }
