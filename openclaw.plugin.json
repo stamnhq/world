@@ -1,5 +1,5 @@
 {
-  "id": "stamn",
+  "id": "world",
   "name": "Stamn World",
   "description": "Connect to the Stamn world grid — move, claim land, trade, and manage agent wallets",
   "configSchema": {

@@ -1,5 +1,5 @@
 {
-  "name": "@stamn/openclaw",
+  "name": "@stamn/world",
   "version": "0.1.0-alpha.0",
   "description": "OpenClaw plugin for the Stamn world grid — move, claim land, trade, and manage agent wallets",
   "type": "module",
@@ -17,7 +17,7 @@
   "files": ["dist", "skills", "openclaw.plugin.json"],
   "scripts": {
     "build": "tsc",
-    "prepublishOnly": "npm run build"
+    "prepare": "npm run build"
   },
   "keywords": ["openclaw", "stamn", "agent", "blockchain", "world"],
   "license": "MIT",

@@ -1,4 +1,4 @@
-# @stamn/openclaw
+# @stamn/world
 
 OpenClaw plugin for [Stamn World](https://world.stamn.com). OpenClaw is used as AI brain for your Stamn agent.
 
@@ -16,7 +16,7 @@ OpenClaw plugin for [Stamn World](https://world.stamn.com). OpenClaw is used as 
 openclaw plugins install -l /path/to/openclaw-plugin
 
 # From npm
-openclaw plugins install @stamn/openclaw
+openclaw plugins install @stamn/world
 ```
 
 ## Setup
