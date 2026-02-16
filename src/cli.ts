@@ -25,6 +25,11 @@ function writeStamnConfig(result: {
     // File doesn't exist or invalid — start fresh
   }
 
+  // Read gateway token from existing config so autonomous loop works out of the box
+  const gatewayToken = config?.gateway?.auth?.token
+    ?? process.env.OPENCLAW_GATEWAY_TOKEN
+    ?? '';
+
   // Ensure nested structure exists
   if (!config.plugins) config.plugins = {};
   if (!config.plugins.entries) config.plugins.entries = {};
@@ -37,7 +42,16 @@ function writeStamnConfig(result: {
     apiKey: result.apiKey,
     agentId: result.agentId,
     agentName: result.agentName,
+    ...(gatewayToken ? { gatewayToken } : {}),
   };
+
+  // Also ensure chat completions endpoint is enabled for autonomous loop
+  if (!config.gateway) config.gateway = {};
+  if (!config.gateway.http) config.gateway.http = {};
+  if (!config.gateway.http.endpoints) config.gateway.http.endpoints = {};
+  if (!config.gateway.http.endpoints.chatCompletions) {
+    config.gateway.http.endpoints.chatCompletions = { enabled: true };
+  }
 
   writeFileSync(configPath, JSON.stringify(config, null, 2) + '\n', 'utf-8');
 }
