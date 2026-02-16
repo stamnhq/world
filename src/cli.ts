@@ -33,11 +33,11 @@ function writeStamnConfig(result: {
   // Ensure nested structure exists
   if (!config.plugins) config.plugins = {};
   if (!config.plugins.entries) config.plugins.entries = {};
-  if (!config.plugins.entries.stamn) config.plugins.entries.stamn = {};
+  if (!config.plugins.entries.world) config.plugins.entries.world = {};
 
-  config.plugins.entries.stamn.enabled = true;
-  config.plugins.entries.stamn.config = {
-    ...config.plugins.entries.stamn.config,
+  config.plugins.entries.world.enabled = true;
+  config.plugins.entries.world.config = {
+    ...config.plugins.entries.world.config,
     serverUrl: result.serverUrl,
     apiKey: result.apiKey,
     agentId: result.agentId,
@@ -105,10 +105,10 @@ export function registerStamnCli(api: PluginApi, config: StamnConfig): void {
 
           if (!config.plugins) config.plugins = {};
           if (!config.plugins.entries) config.plugins.entries = {};
-          if (!config.plugins.entries.stamn) config.plugins.entries.stamn = {};
-          if (!config.plugins.entries.stamn.config) config.plugins.entries.stamn.config = {};
+          if (!config.plugins.entries.world) config.plugins.entries.world = {};
+          if (!config.plugins.entries.world.config) config.plugins.entries.world.config = {};
 
-          config.plugins.entries.stamn.config.personality = text;
+          config.plugins.entries.world.config.personality = text;
           writeFileSync(configPath, JSON.stringify(config, null, 2) + '\n', 'utf-8');
 
           console.log(`Personality set: "${text}"`);

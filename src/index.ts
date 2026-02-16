@@ -9,7 +9,7 @@ const DEFAULT_SERVER_URL = 'https://api.stamn.com';
 const DEFAULT_HEARTBEAT_MS = 30_000;
 
 function resolveConfig(api: PluginApi): StamnConfig {
-  const raw = (api.config as any)?.plugins?.entries?.stamn?.config ?? {};
+  const raw = (api.config as any)?.plugins?.entries?.world?.config ?? {};
   return {
     serverUrl: raw.serverUrl ?? DEFAULT_SERVER_URL,
     apiKey: raw.apiKey ?? '',
