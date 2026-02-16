@@ -42,6 +42,7 @@ export function registerAgentTools(api: PluginApi): void {
     parameters: {
       type: 'object',
       properties: {},
+      required: [],
     },
     execute: async () => {
       const client = getClient();
@@ -125,6 +126,7 @@ export function registerAgentTools(api: PluginApi): void {
     parameters: {
       type: 'object',
       properties: {},
+      required: [],
     },
     execute: async () => {
       const client = getClient();
